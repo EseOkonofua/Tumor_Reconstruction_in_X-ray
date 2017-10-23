@@ -1,6 +1,12 @@
 function radius = Super_Sphere(silhouettes)
 %Supher_Sphere computes super-sphere which is the smallest sphere that centered in the in the center of the C-arm
 %coordinate system and completely encompasses tumor object to be reconstructed
+%   Input:
+%   silhouettes, Cell containing silhouettes of tumor taken at different
+%   angles.
+
+%   Output:
+%   radius, Radius of the generated super sphere
 
     %Source axis distance of 75cm.
     source = [0;75;0];

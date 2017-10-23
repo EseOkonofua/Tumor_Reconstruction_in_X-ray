@@ -1,6 +1,12 @@
 function Q = Point_Projector(alpha, P)
-%Point Projector Summary of this function goes here
-%   Detailed explanation goes here
+%Point Projector  A module to project a point given in C-arm coordinates P(x,y,z) to the detector at some a imaging angle, resulting in
+%a point in detector coordinates Q(u, v, w=0)
+%   Input:
+%   alpha, Imaging angle
+%   P, Point to be projected
+
+%   Output:
+%   Q, Projected point in detector coordinates.
     
     % orthonormal base vectors for detector in C-arm coordinates
     uC = [0;-75;1];

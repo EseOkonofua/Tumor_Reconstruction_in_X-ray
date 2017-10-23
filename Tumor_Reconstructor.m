@@ -1,12 +1,18 @@
 function [contour, volume, k, truePoints] = Tumor_Reconstructor(alphaVector, silhouettes)
-%Tumor_Reconstructor Reconstruct a tumor?s outer shell as a closed convex surface tumor from its silhouettes and compute
+%Tumor_Reconstructor Reconstruct a tumor's outer shell as a closed convex surface tumor from its silhouettes and compute
 %the tumor volume
-%   Returns 
-%   contour, the cell containing triangles that make up the tumor
+%   Input:
+%   alphaVector, Matrix of imaging angles
+%   silhouettes, Cell containing silhouettes of tumor taken at different
+%   angles.
+
+%   Output:
+%   contour, The cell containing triangles that make up the tumor
 %   reconstruction.
-%   volume, the volume of the reconstructed tumor.
-%   k, indices of points that make up contour of tumor
-%   truePoints, points determined to be on and in the tumor
+%   volume, The volume of the reconstructed tumor.
+%   k, Indices of points that make up contour of tumor
+%   truePoints, Points determined to be on and in the tumor
+
     source = [0;75;0];
     
     numSilhouettes = size(silhouettes, 2);
