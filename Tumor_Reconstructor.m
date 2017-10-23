@@ -1,7 +1,12 @@
-function [contour, volume] = Tumor_Reconstructor(alphaVector, silhouettes)
+function [contour, volume, k, truePoints] = Tumor_Reconstructor(alphaVector, silhouettes)
 %Tumor_Reconstructor Reconstruct a tumor?s outer shell as a closed convex surface tumor from its silhouettes and compute
 %the tumor volume
-%   Detailed explanation goes here
+%   Returns 
+%   contour, the cell containing triangles that make up the tumor
+%   reconstruction.
+%   volume, the volume of the reconstructed tumor.
+%   k, indices of points that make up contour of tumor
+%   truePoints, points determined to be on and in the tumor
     source = [0;75;0];
     
     numSilhouettes = size(silhouettes, 2);
@@ -33,9 +38,13 @@ function [contour, volume] = Tumor_Reconstructor(alphaVector, silhouettes)
     end
     
     lineMatrix = mat2cell(reshape(lineMatrix, 1, numel(lineMatrix)), 1, 3*ones(1, size(lineMatrix, 2)));
-    intersect = Intersect_N_Lines(lineMatrix{:})';
+    if numSilhouettes < 2
+        intersect = [0;0;0];
+    else
+        intersect = Intersect_N_Lines(lineMatrix{:})';
+    end
     
-    radius = Super_Sphere(alphaVector, silhouettes);
+    radius = Super_Sphere(silhouettes);
     
     superSpherePoints = [];
     
@@ -44,7 +53,7 @@ function [contour, volume] = Tumor_Reconstructor(alphaVector, silhouettes)
     stepPoint = intersect - radius;
     
     %stepCount aka Voxel size will affect resolution of reconstruction
-    stepCount = 0.1;
+    stepCount = 0.25;
     
     for x = 0:stepCount:radius*2
         for y = 0:stepCount:radius*2
@@ -83,9 +92,5 @@ function [contour, volume] = Tumor_Reconstructor(alphaVector, silhouettes)
     [k ,volume] = convhull(truePoints(1, :), truePoints(2, :), truePoints(3, :));
     contour = truePoints(:, k');
     contour = mat2cell(contour, 3, 3*ones(1, size(k, 1)));
-    
-    figure
-    trisurf(k, truePoints(1, :), truePoints(2, :), truePoints(3, :))
-    title('Tumor Reconstruction')
 end
 
